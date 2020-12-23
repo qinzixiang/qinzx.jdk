@@ -1,0 +1,7 @@
+- name: check jdk env
+  shell: grep -wq "JAVA_HOME" /root/.bashrc && echo 1 || echo 0
+  ignore_errors: true
+  register: result
+- name: set jdk env
+  shell: echo "export JAVA_HOME=/opt/jdk" >> /root/.bashrc && source /root/.bashrc && echo "export PATH=$JAVA_HOME/bin:$PATH" >> /root/.bashrc && source /root/.bashrc
+  when: result == 1

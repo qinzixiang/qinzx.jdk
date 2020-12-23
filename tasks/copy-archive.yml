@@ -1,0 +1,16 @@
+- name: check jdk if exists
+  stat:
+    path: /opt/jdk
+  register: jdk_archive
+- when: not jdk_archive.stat.exists
+  block:
+    - name: unarchive jdk archive
+      unarchive: 
+        src: '{{jdk_archive}}'
+        dest: /opt
+        copy: yes
+    - name: add jdk link
+      file: 
+        state: link
+        src: '/opt/{{jdk_name}}'
+        dest: /opt/jdk
